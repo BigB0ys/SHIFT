@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://b1hcalefc14xn"]
+
+[ext_resource type="Texture2D" uid="uid://lfsy6mishcvl" path="res://icon.svg" id="1_2lkiu"]
+[ext_resource type="Script" uid="uid://bm8w8k4qosbj5" path="res://Characters/enemies/flying slime/flyingslime.gd" id="1_5lqtc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5kfsi"]
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=657788383]
+script = ExtResource("1_5lqtc")
+
+[node name="Icon" type="Sprite2D" parent="." unique_id=2024848709]
+position = Vector2(-1.9073486e-06, -1.9073486e-06)
+scale = Vector2(0.15625001, 0.15624999)
+texture = ExtResource("1_2lkiu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1064333254]
+shape = SubResource("RectangleShape2D_5kfsi")
+
+[node name="Floordetector" type="RayCast2D" parent="." unique_id=1794724621]
+target_position = Vector2(0, 20)
