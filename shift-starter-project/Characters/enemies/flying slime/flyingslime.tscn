@@ -1,19 +1,66 @@
 [gd_scene format=3 uid="uid://b1hcalefc14xn"]
 
-[ext_resource type="Texture2D" uid="uid://lfsy6mishcvl" path="res://icon.svg" id="1_2lkiu"]
 [ext_resource type="Script" uid="uid://bm8w8k4qosbj5" path="res://Characters/enemies/flying slime/flyingslime.gd" id="1_5lqtc"]
+[ext_resource type="Texture2D" uid="uid://keyqkldeq2el" path="res://Art/Characters/flyingenemy-sheet.png" id="3_wbhv1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5kfsi"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_h3uat"]
+atlas = ExtResource("3_wbhv1")
+region = Rect2(96, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0qqyw"]
+atlas = ExtResource("3_wbhv1")
+region = Rect2(144, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1pyxd"]
+atlas = ExtResource("3_wbhv1")
+region = Rect2(0, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nj0vg"]
+atlas = ExtResource("3_wbhv1")
+region = Rect2(48, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_011x5"]
+atlas = ExtResource("3_wbhv1")
+region = Rect2(96, 0, 48, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g4v7s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h3uat")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0qqyw")
+}],
+"loop": 0,
+"name": &"falling",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1pyxd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nj0vg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_011x5")
+}],
+"loop": 0,
+"name": &"rising",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
+
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=657788383]
+collision_layer = 2
 script = ExtResource("1_5lqtc")
 
-[node name="Icon" type="Sprite2D" parent="." unique_id=2024848709]
-position = Vector2(-1.9073486e-06, -1.9073486e-06)
-scale = Vector2(0.15625001, 0.15624999)
-texture = ExtResource("1_2lkiu")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1064333254]
+visible = false
 shape = SubResource("RectangleShape2D_5kfsi")
 
 [node name="Floordetector" type="RayCast2D" parent="." unique_id=1794724621]
@@ -24,3 +71,17 @@ target_position = Vector2(0, 34)
 
 [node name="horizontalcheck" type="RayCast2D" parent="." unique_id=826500222]
 target_position = Vector2(20, 0)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1036236364]
+position = Vector2(-2, -4)
+sprite_frames = SubResource("SpriteFrames_g4v7s")
+animation = &"falling"
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1789184804]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=858513223]
+shape = SubResource("RectangleShape2D_g4v7s")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

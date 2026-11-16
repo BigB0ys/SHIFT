@@ -39,9 +39,9 @@ func update_animation():
 	elif velocity.x > 0:
 		animations.flip_h = false
 	if velocity.y < 0:
-		animations.play("idle")
+		animations.play("jump")
 	elif velocity.y > 0:
-		animations.play("idle")
+		animations.play("falling")
 	elif velocity.x != 0:
 		animations.play("running")
 	elif velocity == Vector2.ZERO and is_on_floor():
