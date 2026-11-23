@@ -45,3 +45,4 @@ func update_animation():
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is player:
 		body.queue_free()
+		#body.get_hit()

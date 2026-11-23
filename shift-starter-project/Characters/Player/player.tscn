@@ -3,6 +3,11 @@
 [ext_resource type="Texture2D" uid="uid://c561c1k6if5fm" path="res://Art/Characters/Player-Sheet.png" id="1_6xdwp"]
 [ext_resource type="Script" uid="uid://b15thhmxdd3gh" path="res://Characters/Player/player.gd" id="1_j341n"]
 [ext_resource type="Texture2D" uid="uid://bq7rcp0pg2ds6" path="res://Art/Characters/player-sheet2electricboogaloo.png" id="2_cue0d"]
+[ext_resource type="Texture2D" uid="uid://keyqkldeq2el" path="res://Art/Characters/flyingenemy-sheet.png" id="4_7vev3"]
+[ext_resource type="Script" uid="uid://fxk6aaju6x0v" path="res://Characters/State_stuff/character_state_machine.gd" id="4_bqsbk"]
+[ext_resource type="Script" uid="uid://b85m0sfvslo6p" path="res://Characters/State_stuff/doublejump.gd" id="5_osktb"]
+[ext_resource type="Script" uid="uid://btl70g4ei1ebq" path="res://Characters/State_stuff/basic.gd" id="6_7vev3"]
+[ext_resource type="Script" uid="uid://celrvb8h5yvpq" path="res://Characters/Player/Debuglabel.gd" id="8_klx3t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
 size = Vector2(22, 13)
@@ -89,6 +94,11 @@ region = Rect2(96, 64, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_57qmd"]
 animations = [{
+"frames": [],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bqsbk")
@@ -175,6 +185,59 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_h3uat"]
+atlas = ExtResource("4_7vev3")
+region = Rect2(96, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0qqyw"]
+atlas = ExtResource("4_7vev3")
+region = Rect2(144, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1pyxd"]
+atlas = ExtResource("4_7vev3")
+region = Rect2(0, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nj0vg"]
+atlas = ExtResource("4_7vev3")
+region = Rect2(48, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_011x5"]
+atlas = ExtResource("4_7vev3")
+region = Rect2(96, 0, 48, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_klx3t"]
+animations = [{
+"frames": [],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h3uat")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0qqyw")
+}],
+"loop": 0,
+"name": &"falling",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1pyxd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nj0vg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_011x5")
+}],
+"loop": 0,
+"name": &"rising",
+"speed": 5.0
+}]
+
 [node name="Player" type="CharacterBody2D" unique_id=891099584]
 collision_layer = 2
 script = ExtResource("1_j341n")
@@ -189,7 +252,32 @@ position_smoothing_enabled = true
 drag_vertical_enabled = true
 drag_vertical_offset = 1.0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1968237174]
+[node name="GreenSlime" type="AnimatedSprite2D" parent="." unique_id=1968237174]
 position = Vector2(0, -9)
 sprite_frames = SubResource("SpriteFrames_57qmd")
-animation = &"jump"
+
+[node name="FlyingSlime" type="AnimatedSprite2D" parent="." unique_id=1013678021]
+position = Vector2(-2, -4)
+sprite_frames = SubResource("SpriteFrames_klx3t")
+
+[node name="StateMachine" type="Node" parent="." unique_id=1488602977 node_paths=PackedStringArray("current_state", "character")]
+script = ExtResource("4_bqsbk")
+current_state = NodePath("basic")
+character = NodePath("..")
+metadata/_custom_type_script = "uid://fxk6aaju6x0v"
+
+[node name="basic" type="Node" parent="StateMachine" unique_id=550660113 node_paths=PackedStringArray("state_animations")]
+script = ExtResource("6_7vev3")
+state_animations = NodePath("../../GreenSlime")
+metadata/_custom_type_script = "uid://cg5hrbiyr3bie"
+
+[node name="doublejump" type="Node" parent="StateMachine" unique_id=1541293626 node_paths=PackedStringArray("state_animations")]
+script = ExtResource("5_osktb")
+state_animations = NodePath("../../FlyingSlime")
+metadata/_custom_type_script = "uid://cg5hrbiyr3bie"
+
+[node name="Label" type="Label" parent="." unique_id=1226034438 node_paths=PackedStringArray("state_machine")]
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("8_klx3t")
+state_machine = NodePath("../StateMachine")

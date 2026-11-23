@@ -6,8 +6,6 @@ class_name player
 @export var jump_speed : float = -320
 @export var jump_acceleration : float = 50
 
-@onready var animations : AnimatedSprite2D = $AnimatedSprite2D
-
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
@@ -31,18 +29,3 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, speed)
 
 	move_and_slide()
-	update_animation()
-
-func update_animation():
-	if velocity.x < 0:
-		animations.flip_h = true
-	elif velocity.x > 0:
-		animations.flip_h = false
-	if velocity.y < 0:
-		animations.play("jump")
-	elif velocity.y > 0:
-		animations.play("falling")
-	elif velocity.x != 0:
-		animations.play("running")
-	elif velocity == Vector2.ZERO and is_on_floor():
-		animations.play("idle")
