@@ -11,6 +11,11 @@ func state_process(delta):
 
 func update_animation():
 	if character.velocity.y < 0:
-		state_animations.play("falling")
+		state_animations.play("jumps")
 	elif character.velocity.y > 0:
-		state_animations.play("rising")
+		state_animations.play("falling")
+	elif character.velocity.x != 0:
+		state_animations.play("running")
+	elif character.velocity == Vector2.ZERO and character.is_on_floor():
+		state_animations.play("idle")
+	

@@ -33,4 +33,6 @@ func switch_states(new_state : State):
 func _input(event : InputEvent):
 	if event.is_action_pressed("state up"):
 		switch_states(states[(states.find(current_state)+1) % states.size()])
+	if event.is_action_pressed("state down"):
+		switch_states(states[(states.find(current_state)-1) % states.size()])
 	current_state.state_input(event)

@@ -5,6 +5,7 @@ class_name player
 @export var speed : float = 270
 @export var jump_speed : float = -320
 @export var jump_acceleration : float = 50
+@export var state_machine : StateMachine
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -27,5 +28,10 @@ func _physics_process(delta: float) -> void:
 			velocity.x = move_toward(velocity.x, speed, jump_acceleration)
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed)
+		
+	if velocity.x < 0:
+		state_machine.current_state.state_animations.flip_h = true
+	elif velocity.x > 0:
+		state_machine.current_state.state_animations.flip_h = false
 
 	move_and_slide()
